@@ -34,7 +34,18 @@ namespace Alura.LeilaoOnLine.Tests
             var valorObtido = leilao.Ganhador.Valor;
             Assert.Equal(valorLanceVencedor, valorObtido);
         }
-        
+        [Fact]
+        public void LancaInvalidOperationExceptionDadoPregaoNaoIniciado() 
+        {
+            //Arramge
+            var leilao = new Leilao("Van Gogh");
+
+            //Act
+            //Assert
+            var exception=Assert.Throws<System.InvalidOperationException>(() => leilao.TerminaPregao());
+            Assert.Equal("Inicie essa buceta! Utilize o método  IniciaPrgao()!", exception.Message);
+        }
+
         [Fact]
         public void RetornaZeroLeilaoSemLances()
         {
@@ -42,6 +53,7 @@ namespace Alura.LeilaoOnLine.Tests
             var leilao = new Leilao("Van Gogh");
 
             //Act
+            leilao.IniciaPregao();
             leilao.TerminaPregao();
 
             //Assert

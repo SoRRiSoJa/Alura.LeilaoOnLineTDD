@@ -37,13 +37,17 @@ namespace Alura.LeilaoOnline.Core
 
         public void TerminaPregao()
         {
-
+            if (Estado != EstadoLeilao.LeilaoEmAndamento)
+            {
+                throw new InvalidOperationException("Inicie essa buceta! Utilize o método  IniciaPrgao()!");
+            }
             Ganhador = _lances.DefaultIfEmpty(new Lance(null, 0)).OrderBy((l) => l.Valor).LastOrDefault();
             Estado = EstadoLeilao.LeilaoFinalizado;
         }
         private bool ValidarLance(Interessada cliente, double valor)
         {
-            return (Estado == EstadoLeilao.LeilaoEmAndamento && _ultimoCLiente != cliente && valor > 0);
+          
+            return (Estado == EstadoLeilao.LeilaoEmAndamento && _ultimoCLiente != cliente );
         }
     }
 }
