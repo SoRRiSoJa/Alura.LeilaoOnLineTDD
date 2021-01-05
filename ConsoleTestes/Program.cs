@@ -16,7 +16,7 @@ namespace ConsoleTestes
         private static void LeilaoComUmUnicoLance()
         {
             //Arramge
-            var leilao = new Leilao("Van Gogh");
+            var leilao = new Leilao("Van Gogh",null);
             var fulano = new Interessada("Fulano", leilao);
 
             //Act
@@ -50,7 +50,7 @@ namespace ConsoleTestes
         private static void LeilaoComVAriosLances()
         {
             //Arramge
-            var leilao = new Leilao("Van Gogh");
+            var leilao = new Leilao("Van Gogh",null);
             var fulano = new Interessada("Fulano", leilao);
             var maria = new Interessada("Maria", leilao);
             //Act
