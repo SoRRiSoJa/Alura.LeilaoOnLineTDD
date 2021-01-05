@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Alura.LeilaoOnline.Core;
 using Xunit;
@@ -8,40 +9,46 @@ namespace Alura.LeilaoOnLine.Tests
 {
     public class LeilaoTestes
     {
-        [Fact]
-        public  void LeilaoComVAriosLances()
+        
+        
+        [Theory]
+        [InlineData(new double[] { 800, 900, 1000, 1200 })]
+        [InlineData(new double[] { 800, 900, 1000, 990 })]
+        [InlineData(new double[] { 800 })]
+        public void LeilaoComVAriosLances(double[] ofertas)
         {
             //Arramge
-            int valorLanceVencedor = 11000;
+            var valorLanceVencedor = ofertas.Max();
             var leilao = new Leilao("Van Gogh");
             var fulano = new Interessada("Fulano", leilao);
-            var maria = new Interessada("Maria", leilao);
+            
             //Act
-            leilao.RecebeLance(fulano, 800);
-            leilao.RecebeLance(maria, 900);
-            leilao.RecebeLance(maria, valorLanceVencedor);
-            leilao.RecebeLance(fulano, 1000);
+            foreach (var oferta in ofertas)
+            {
+                leilao.RecebeLance(fulano, oferta);
+            }
             //Assert
             leilao.TerminaPregao();
             var valorEsperado = valorLanceVencedor;
             var valorObtido = leilao.Ganhador.Valor;
-            Assert.Equal(new decimal(valorLanceVencedor), new decimal(valorObtido));
+            Assert.Equal(valorLanceVencedor, valorObtido);
         }
+        
         [Fact]
-        public void LeilaoComUmLance()
+        public void LeilaoSemLances()
         {
             //Arramge
             var leilao = new Leilao("Van Gogh");
-            var fulano = new Interessada("Fulano", leilao);
-            int valorLance = 800;
+
             //Act
-            leilao.RecebeLance(fulano, valorLance);
-            //Assert
             leilao.TerminaPregao();
-            var valorEsperado = valorLance;
+
+            //Assert
+            var valorEsperado = 0;
             var valorObtido = leilao.Ganhador.Valor;
-            Assert.Equal(new decimal(valorLance), new decimal(valorObtido));
+
+            Assert.Equal(valorEsperado, valorObtido);
         }
     }
-    
+
 }
