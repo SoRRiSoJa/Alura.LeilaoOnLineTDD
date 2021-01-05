@@ -6,7 +6,8 @@ namespace Alura.LeilaoOnLine.Core
 {
     public enum EstadoLeilao
     {
+        LeilaoAntesPregao,
         LeilaoEmAndamento,
-        leilaoFinalizado
+        LeilaoFinalizado
     }
 }

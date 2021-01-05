@@ -18,11 +18,12 @@ namespace Alura.LeilaoOnLine.Tests
         public void RetornaMaiorDadoLeilaoComPeloMenosUmLance(double[] ofertas)
         {
             //Arramge
-            var valorLanceVencedor = ofertas.Max();
+            var valorLanceVencedor = 800;
             var leilao = new Leilao("Van Gogh");
             var fulano = new Interessada("Fulano", leilao);
-            
+
             //Act
+            leilao.IniciaPregao();
             foreach (var oferta in ofertas)
             {
                 leilao.RecebeLance(fulano, oferta);

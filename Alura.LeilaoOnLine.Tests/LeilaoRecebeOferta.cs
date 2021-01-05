@@ -9,20 +9,40 @@ namespace Alura.LeilaoOnLine.Tests
 {
     public class LeilaoRecebeOferta
     {
+
+        [Fact]
+        public void NaoAceitaProximoLancesDadoMesmoClienteRealizouUltimaOferta() 
+        {
+            //Arrange
+            var leilao = new Leilao("Van Gogh");
+            var fulano = new Interessada("Fulano", leilao);
+            leilao.IniciaPregao();
+            leilao.RecebeLance(fulano, 800);
+
+            //Act
+            leilao.RecebeLance(fulano, 1000);
+
+            //Assert
+            
+            var qtdEsperada = 1;
+            var qtdObtida = leilao.Lances.Count();
+            Assert.Equal(qtdEsperada, qtdObtida);
+        }
         [Theory]
-        [InlineData(4, new double[] { 1000, 1200,1400,1300 })]
-        [InlineData(2,new double[] {800,900})]
+        [InlineData(1, new double[] { 1000, 1200,1400,1300 })]
+        [InlineData(1,new double[] {800,900})]
         public void NaoPermiteNovosLancesDadosLeilaoFinalizado(int qtdEsperada, double[] ofertas) 
         {
             //Arrange
             var leilao = new Leilao("Van Gogh");
             var fulano = new Interessada("Fulano",leilao);
-
+            
+            leilao.IniciaPregao();
             foreach (var valor in ofertas)
             {
                 leilao.RecebeLance(fulano, valor);
             }
-                        leilao.TerminaPregao();
+            leilao.TerminaPregao();
             
             //Act
             

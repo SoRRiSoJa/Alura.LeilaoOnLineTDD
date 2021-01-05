@@ -13,31 +13,37 @@ namespace Alura.LeilaoOnline.Core
         public IEnumerable<Lance> Lances => _lances;
         public string Peca { get; }
         public Lance Ganhador { get; private set; }
+        private Interessada _ultimoCLiente;
         public Leilao(string peca)
         {
             Peca = peca;
             _lances = new List<Lance>();
-            Estado = EstadoLeilao.LeilaoEmAndamento;
+            Estado = EstadoLeilao.LeilaoAntesPregao;
         }
+
         public void RecebeLance(Interessada cliente, double valor)
         {
-            if (Estado==EstadoLeilao.LeilaoEmAndamento)
+            if (ValidarLance(cliente, valor))
             {
                 _lances.Add(new Lance(cliente, valor));
+                _ultimoCLiente = cliente;
             }
         }
 
         public void IniciaPregao()
         {
-
+            Estado = (Estado != EstadoLeilao.LeilaoFinalizado) ? EstadoLeilao.LeilaoEmAndamento : Estado;
         }
 
         public void TerminaPregao()
         {
-            
-            Ganhador = _lances.DefaultIfEmpty(new Lance(null,0)).OrderBy((l)=>l.Valor).LastOrDefault();
-            Estado = EstadoLeilao.leilaoFinalizado;
-        }
 
+            Ganhador = _lances.DefaultIfEmpty(new Lance(null, 0)).OrderBy((l) => l.Valor).LastOrDefault();
+            Estado = EstadoLeilao.LeilaoFinalizado;
+        }
+        private bool ValidarLance(Interessada cliente, double valor)
+        {
+            return (Estado == EstadoLeilao.LeilaoEmAndamento && _ultimoCLiente != cliente && valor > 0);
+        }
     }
 }
